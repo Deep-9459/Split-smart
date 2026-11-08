@@ -1,0 +1,960 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>SplitSmart – Smart Bill Scanner & UPI Splitter | Premium PWA</title>
+    
+    <!-- Meta tags for PWA & SEO -->
+    <meta name="description" content="Forbes-inspired smart restaurant bill scanner, item-wise expense splitter, and UPI payment QR generator.">
+    <meta name="theme-color" content="#101010">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="SplitSmart">
+    
+    <!-- PWA Manifest & Favicon -->
+    <link rel="manifest" href="manifest.json">
+    <link rel="icon" type="image/svg+xml" href="assets/icons/favicon.svg">
+    <link rel="apple-touch-icon" href="assets/icons/icon-192.png">
+
+    <!-- Fonts (Serif for Headlines, Sans-serif for Body) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,600;0,700;0,900;1,600&family=Roboto+Mono:wght@500;700&display=swap" rel="stylesheet">
+
+    <!-- Stylesheets -->
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/components.css">
+    <link rel="stylesheet" href="css/responsive.css">
+</head>
+<body>
+    <div class="app-container">
+        
+        <!-- Top Editorial Forbes Header -->
+        <header class="forbes-header">
+            <div class="header-inner">
+                <div class="brand-section">
+                    <div class="brand-title">
+                        <span>SPLIT</span><span class="brand-accent">SMART</span>
+                    </div>
+                    <div class="brand-tagline">The Financial Standard for Bill Settlement</div>
+                </div>
+
+                <!-- Desktop Navigation -->
+                <nav class="desktop-nav">
+                    <a class="nav-link active" data-view="dashboard">Home</a>
+                    <a class="nav-link" data-view="scan">Scan Bill</a>
+                    <a class="nav-link" data-view="split">Split Bill</a>
+                    <a class="nav-link" data-view="payments">Payments & QR</a>
+                    <a class="nav-link" data-view="history">History</a>
+                    <a class="nav-link" data-view="settings">Settings & Tests</a>
+                </nav>
+
+                <!-- Header Right Controls -->
+                <div class="header-controls">
+                    <!-- Connectivity Pill -->
+                    <div class="connectivity-pill" id="conn-indicator" title="Network status">
+                        <span class="conn-dot" id="conn-dot"></span>
+                        <span id="conn-text">Online</span>
+                    </div>
+
+                    <!-- Theme Toggle Button -->
+                    <button class="btn btn-subtle btn-sm" id="btn-theme-toggle" title="Toggle Theme" aria-label="Toggle Dark/Light Mode">
+                        <span id="theme-icon">🌙</span>
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        <!-- Initiative by Deep Jhaveri Editorial Sub-Banner -->
+        <div class="initiative-banner">
+            <div class="initiative-inner">
+                <div class="initiative-tag">
+                    <span class="initiative-badge">Fintech Initiative</span>
+                    <span>Conceptualized & Engineered by <strong>Deep Jhaveri</strong></span>
+                </div>
+                <div class="active-upi-pill" id="header-upi-indicator" style="font-size:0.75rem; font-weight:600; cursor:pointer;">
+                    Receiving on: <strong id="header-upi-val">deep@okhdfcbank</strong>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Content Area (Dynamic Views) -->
+        <main class="content-wrapper">
+
+            <!-- ========================================== -->
+            <!-- VIEW 1: HOME DASHBOARD                     -->
+            <!-- ========================================== -->
+            <section id="view-dashboard" class="app-view active">
+                <div class="forbes-card" style="border-left: 4px solid var(--color-accent); background: linear-gradient(to right, var(--color-surface), var(--color-surface-subtle));">
+                    <div style="display:flex; justify-content:space-between; align-items:flex-start; flex-wrap:wrap; gap:1rem;">
+                        <div>
+                            <span class="badge badge-neutral" style="margin-bottom:0.5rem;">Financial Protocol</span>
+                            <h1>Bill Settlement, Re-Engineered.</h1>
+                            <p style="max-width: 650px; font-size: 0.95rem;">
+                                Eliminate awkward mental math, rounding errors, and uncollected dining balances. 
+                                SplitSmart combines client-side OCR heuristics with strict integer paise calculation and direct NPCI UPI QR generation.
+                            </p>
+                            <p style="font-size:0.8rem; color:var(--color-text-muted); font-style:italic;">
+                                SplitSmart — An Initiative by Deep Jhaveri.
+                            </p>
+                        </div>
+                        <div style="display:flex; flex-direction:column; gap:0.5rem; min-width:180px;">
+                            <button class="btn btn-accent btn-block" id="btn-hero-scan">
+                                📷 Scan New Bill
+                            </button>
+                            <button class="btn btn-outline btn-block" id="btn-hero-sample">
+                                📑 Load Sample Bill
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Financial Health Metrics -->
+                <div class="stat-grid">
+                    <div class="stat-box">
+                        <div class="stat-label">Total Bills Split</div>
+                        <div class="stat-value" id="stat-total-bills">0</div>
+                        <div class="stat-sub">Archived in secure local storage</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="stat-label">Total Expenditure Settled</div>
+                        <div class="stat-value" id="stat-total-amount">₹0.00</div>
+                        <div class="stat-sub">Exact paise reconciled</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="stat-label">Diners & Participants</div>
+                        <div class="stat-value" id="stat-total-participants">0</div>
+                        <div class="stat-sub">Across all settlements</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="stat-label">Default Beneficiary UPI</div>
+                        <div class="stat-value" id="stat-active-upi" style="font-size:1.15rem; font-family:var(--font-mono); word-break:break-all;">-</div>
+                        <div class="stat-sub" id="stat-active-name">Verified Account</div>
+                    </div>
+                </div>
+
+                <!-- Quick Action Hub -->
+                <div class="card-header" style="margin-top:2rem;">
+                    <h2 class="card-title">Settlement Operations</h2>
+                </div>
+                <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(240px, 1fr)); gap:1rem; margin-bottom:2rem;">
+                    <div class="forbes-card" style="cursor:pointer;" id="action-card-camera">
+                        <h3>📷 Camera Scanner</h3>
+                        <p style="font-size:0.85rem;">Capture bill receipt using high-resolution camera with real-time framing.</p>
+                        <span class="btn btn-subtle btn-sm">Launch Camera →</span>
+                    </div>
+                    <div class="forbes-card" style="cursor:pointer;" id="action-card-upload">
+                        <h3>📁 Image / PDF Ingestion</h3>
+                        <p style="font-size:0.85rem;">Upload bill photos, screenshots, or e-invoices from restaurant apps.</p>
+                        <span class="btn btn-subtle btn-sm">Upload File →</span>
+                    </div>
+                    <div class="forbes-card" style="cursor:pointer;" id="action-card-manual">
+                        <h3>✍️ Manual Entry</h3>
+                        <p style="font-size:0.85rem;">Enter items, taxes, discounts, and service charges manually in financial grid.</p>
+                        <span class="btn btn-subtle btn-sm">Enter Bill →</span>
+                    </div>
+                </div>
+
+                <!-- Recent Bills Feed -->
+                <div class="forbes-card">
+                    <div class="card-header">
+                        <h2 class="card-title">Recent Bill Settlements</h2>
+                        <a href="javascript:void(0)" class="nav-link" data-view="history" style="font-size:0.8rem;">View All Archive →</a>
+                    </div>
+                    <div id="dashboard-recent-bills-container">
+                        <p style="color:var(--color-text-muted); font-size:0.85rem;">Loading recent bills...</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ========================================== -->
+            <!-- VIEW 2: HYBRID BILL SCANNER & OCR          -->
+            <!-- ========================================== -->
+            <section id="view-scan" class="app-view" style="display:none;">
+                <div class="card-header">
+                    <div>
+                        <h2>Bill Ingestion & Optical Recognition</h2>
+                        <p style="font-size:0.85rem; margin-bottom:0;">Capture receipt via camera, upload image or PDF, or load an Indian dining preset.</p>
+                    </div>
+                    <span class="badge badge-neutral">Client-Side First</span>
+                </div>
+
+                <!-- Ingestion Tabs -->
+                <div class="tab-bar">
+                    <button class="tab-btn active" data-scan-tab="camera">📷 Mobile Camera</button>
+                    <button class="tab-btn" data-scan-tab="upload">📁 File Upload (Image/PDF)</button>
+                    <button class="tab-btn" data-scan-tab="presets">📑 Sample Dining Bills</button>
+                    <button class="tab-btn" data-scan-tab="manual">✍️ Manual Creation</button>
+                </div>
+
+                <!-- Tab 1: Camera Scanner -->
+                <div id="tab-scan-camera" class="scan-subtab">
+                    <div class="camera-box" id="camera-container">
+                        <video id="camera-video" class="camera-video" playsinline autoplay muted></video>
+                        <div class="camera-guide-overlay"></div>
+                    </div>
+                    <div class="camera-controls-bar">
+                        <button class="btn btn-subtle btn-sm" id="btn-torch" title="Flashlight">💡 Flash</button>
+                        <button class="btn-shutter" id="btn-camera-capture" title="Capture Bill Photo"></button>
+                        <button class="btn btn-subtle btn-sm" id="btn-switch-cam" title="Switch Lens">🔄 Flip</button>
+                    </div>
+
+                    <!-- Multi-capture tray -->
+                    <div id="multi-capture-section" style="margin-top:1rem; display:none;">
+                        <span class="form-label">Captured Bill Segments (<span id="capture-count">0</span>):</span>
+                        <div class="capture-tray" id="capture-tray"></div>
+                        <div style="margin-top:0.75rem; display:flex; gap:0.5rem;">
+                            <button class="btn btn-accent btn-sm" id="btn-process-captures">⚡ Process Captured Bill</button>
+                            <button class="btn btn-outline btn-sm" id="btn-clear-captures">Clear All</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tab 2: File Upload -->
+                <div id="tab-scan-upload" class="scan-subtab" style="display:none;">
+                    <div class="forbes-card" id="drop-zone" style="border: 2px dashed var(--color-border); text-align:center; padding:3rem 1.5rem; cursor:pointer;">
+                        <div style="font-size:2.5rem; margin-bottom:0.75rem;">📄</div>
+                        <h3>Drag & Drop Receipt or Invoice</h3>
+                        <p style="font-size:0.85rem;">Supports JPG, PNG, WEBP, and PDF bills from Zomato, Swiggy, or physical restaurants.</p>
+                        <input type="file" id="file-input" accept="image/*,application/pdf" style="display:none;">
+                        <button class="btn btn-primary" id="btn-browse-files">Browse Files</button>
+                    </div>
+                </div>
+
+                <!-- Tab 3: Sample Bills -->
+                <div id="tab-scan-presets" class="scan-subtab" style="display:none;">
+                    <p style="font-size:0.85rem; margin-bottom:1rem;">Select a pre-loaded restaurant bill to test the OCR parser and calculation engine instantly:</p>
+                    <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(260px, 1fr)); gap:1rem;">
+                        <div class="forbes-card" style="cursor:pointer;" id="sample-card-bombay">
+                            <span class="badge badge-success">Fine Dining</span>
+                            <h3 style="margin-top:0.5rem;">The Bombay Canteen</h3>
+                            <p style="font-size:0.8rem;">Mumbai • ₹3,767.50 • 6 items • 10% Service Charge + 5% GST + Corporate Discount</p>
+                            <button class="btn btn-subtle btn-sm btn-block">Load This Bill →</button>
+                        </div>
+                        <div class="forbes-card" style="cursor:pointer;" id="sample-card-toit">
+                            <span class="badge badge-success">Microbrewery</span>
+                            <h3 style="margin-top:0.5rem;">Toit Brewpub</h3>
+                            <p style="font-size:0.8rem;">Bengaluru • ₹4,150.14 • Food + Beers • 15% Happy Hour Disc + 7.5% Service Charge</p>
+                            <button class="btn btn-subtle btn-sm btn-block">Load This Bill →</button>
+                        </div>
+                        <div class="forbes-card" style="cursor:pointer;" id="sample-card-haldiram">
+                            <span class="badge badge-success">Quick Service</span>
+                            <h3 style="margin-top:0.5rem;">Haldiram's Express</h3>
+                            <p style="font-size:0.8rem;">Delhi • ₹1,265.26 • Chhole Bhature, Chaat & Sweets • Pure 5% GST</p>
+                            <button class="btn btn-subtle btn-sm btn-block">Load This Bill →</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tab 4: Manual Entry -->
+                <div id="tab-scan-manual" class="scan-subtab" style="display:none;">
+                    <div class="forbes-card">
+                        <h3>Create New Blank Bill</h3>
+                        <p style="font-size:0.85rem;">Start with an empty bill sheet and add items directly into the verification grid.</p>
+                        <button class="btn btn-primary" id="btn-create-blank">Create Blank Bill</button>
+                    </div>
+                </div>
+
+                <!-- OCR Progress Indicator -->
+                <div id="ocr-progress-box" class="forbes-card" style="display:none; text-align:center; padding:2rem 1rem;">
+                    <div class="badge badge-neutral" style="margin-bottom:0.75rem;">OCR Processing Pipeline</div>
+                    <h3 id="ocr-progress-title">Analyzing Receipt Image...</h3>
+                    <p id="ocr-progress-detail" style="font-size:0.85rem;">Applying grayscale contrast filter and heuristic text parsing...</p>
+                    <div style="width:100%; height:6px; background:var(--color-surface-subtle); border-radius:3px; overflow:hidden; margin-top:1rem;">
+                        <div id="ocr-progress-bar" style="width:25%; height:100%; background:var(--color-accent); transition:width 0.4s ease;"></div>
+                    </div>
+                </div>
+
+                <!-- ========================================== -->
+                <!-- EDITABLE VERIFICATION SCREEN (STAGE 3)     -->
+                <!-- ========================================== -->
+                <div id="verification-screen" class="forbes-card" style="margin-top:2rem; display:none;">
+                    <div class="card-header">
+                        <div>
+                            <h2>Financial Bill Verification</h2>
+                            <p style="font-size:0.85rem; margin-bottom:0;">Audit extracted line items, adjust quantities, verify taxes, and confirm grand total.</p>
+                        </div>
+                        <div style="display:flex; gap:0.5rem;">
+                            <button class="btn btn-subtle btn-sm" id="btn-open-ai-modal" title="Optional AI Verification">✨ AI Assist</button>
+                            <button class="btn btn-subtle btn-sm" id="btn-re-ocr">🔄 Re-scan</button>
+                        </div>
+                    </div>
+
+                    <!-- Bill Metadata Form -->
+                    <div class="form-row">
+                        <div class="form-col">
+                            <label class="form-label">Restaurant / Establishment</label>
+                            <input type="text" class="form-control" id="bill-restaurant-name" placeholder="e.g. The Bombay Canteen">
+                        </div>
+                        <div class="form-col">
+                            <label class="form-label">Invoice / Bill No.</label>
+                            <input type="text" class="form-control" id="bill-invoice-no" placeholder="e.g. BC-2026/8941">
+                        </div>
+                        <div class="form-col">
+                            <label class="form-label">Date</label>
+                            <input type="date" class="form-control" id="bill-date">
+                        </div>
+                        <div class="form-col">
+                            <label class="form-label">GSTIN (Optional)</label>
+                            <input type="text" class="form-control" id="bill-gstin" placeholder="e.g. 27AAAAA0000A1Z5">
+                        </div>
+                    </div>
+
+                    <!-- Line Items Table -->
+                    <div class="card-header" style="margin-top:1.5rem; margin-bottom:0.75rem;">
+                        <h3 class="card-title">Extracted Menu Items</h3>
+                        <button class="btn btn-outline btn-sm" id="btn-add-item">+ Add Line Item</button>
+                    </div>
+
+                    <div class="table-responsive">
+                        <table class="financial-table" id="table-verification-items">
+                            <thead>
+                                <tr>
+                                    <th style="width:40px;">#</th>
+                                    <th>Item Description</th>
+                                    <th style="width:80px;" class="numeric">Qty</th>
+                                    <th style="width:110px;" class="numeric">Unit Price (₹)</th>
+                                    <th style="width:110px;" class="numeric">Line Total (₹)</th>
+                                    <th style="width:80px;">Confidence</th>
+                                    <th style="width:60px;">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody id="verification-items-body">
+                                <!-- Dynamic item rows -->
+                            </tbody>
+                            <tfoot>
+                                <tr>
+                                    <td colspan="4" style="text-align:right;">Calculated Food Subtotal:</td>
+                                    <td class="numeric" id="verification-calc-subtotal">₹0.00</td>
+                                    <td colspan="2"></td>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+
+                    <!-- Financial Summary & Tax Matrix Form -->
+                    <div class="card-header" style="margin-top:1.5rem; margin-bottom:0.75rem;">
+                        <h3 class="card-title">Taxes, Discounts & Surcharges</h3>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-col">
+                            <label class="form-label">Discount Amount (₹)</label>
+                            <input type="number" step="0.01" class="form-control" id="tax-discount-amt" value="0.00">
+                        </div>
+                        <div class="form-col">
+                            <label class="form-label">Service Charge (₹)</label>
+                            <input type="number" step="0.01" class="form-control" id="tax-service-amt" value="0.00">
+                        </div>
+                        <div class="form-col">
+                            <label class="form-label">CGST (₹)</label>
+                            <input type="number" step="0.01" class="form-control" id="tax-cgst-amt" value="0.00">
+                        </div>
+                        <div class="form-col">
+                            <label class="form-label">SGST (₹)</label>
+                            <input type="number" step="0.01" class="form-control" id="tax-sgst-amt" value="0.00">
+                        </div>
+                        <div class="form-col">
+                            <label class="form-label">IGST (₹)</label>
+                            <input type="number" step="0.01" class="form-control" id="tax-igst-amt" value="0.00">
+                        </div>
+                        <div class="form-col">
+                            <label class="form-label">Tip / Gratuity (₹)</label>
+                            <input type="number" step="0.01" class="form-control" id="tax-tip-amt" value="0.00">
+                        </div>
+                        <div class="form-col">
+                            <label class="form-label">Round-off / Adjust (₹)</label>
+                            <input type="number" step="0.01" class="form-control" id="tax-roundoff-amt" value="0.00">
+                        </div>
+                        <div class="form-col">
+                            <label class="form-label" style="color:var(--color-accent);">Verified Grand Total (₹)</label>
+                            <input type="number" step="0.01" class="form-control" id="tax-grand-total" style="font-weight:700; font-size:1.1rem; border-color:var(--color-primary);" value="0.00">
+                        </div>
+                    </div>
+
+                    <!-- Reconciliation Discrepancy Status Banner -->
+                    <div id="reconciliation-alert-banner" class="security-guard-box" style="margin-top:1.25rem;">
+                        <strong id="reconciliation-alert-title">Mathematical Verification Status</strong>
+                        <span id="reconciliation-alert-text">Auditing calculations...</span>
+                        <div id="reconciliation-auto-fix-row" style="margin-top:0.5rem; display:none;">
+                            <button class="btn btn-accent btn-sm" id="btn-auto-reconcile">⚡ Auto-Reconcile Grand Total to Match Line Items</button>
+                        </div>
+                    </div>
+
+                    <!-- Proceed Action Button -->
+                    <div style="margin-top:1.5rem; display:flex; justify-content:flex-end; gap:1rem;">
+                        <button class="btn btn-accent" id="btn-proceed-to-split" style="font-size:1rem; padding:0.85rem 2rem;">
+                            Proceed to Bill Splitting →
+                        </button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ========================================== -->
+            <!-- VIEW 3: BILL SPLITTING ENGINE              -->
+            <!-- ========================================== -->
+            <section id="view-split" class="app-view" style="display:none;">
+                <div class="card-header">
+                    <div>
+                        <h2>Expense Splitting Engine</h2>
+                        <p style="font-size:0.85rem; margin-bottom:0;" id="split-bill-header-desc">The Bombay Canteen • Grand Total: ₹3,767.50</p>
+                    </div>
+                    <span class="badge badge-success" id="split-reconciled-badge">✓ Exact Paise Invariant</span>
+                </div>
+
+                <!-- Participant Management Card -->
+                <div class="forbes-card">
+                    <div class="card-header">
+                        <h3 class="card-title">Diners & Participants</h3>
+                        <div style="display:flex; gap:0.5rem;">
+                            <select class="form-control" id="select-saved-group" style="width:auto; font-size:0.8rem; padding:0.35rem 0.6rem;">
+                                <option value="">+ Load Saved Group...</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div style="display:flex; gap:0.5rem; margin-bottom:1rem;">
+                        <input type="text" class="form-control" id="input-new-participant" placeholder="Enter diner name (e.g. Alice, Bob)...">
+                        <button class="btn btn-primary" id="btn-add-participant" style="white-space:nowrap;">+ Add Diner</button>
+                    </div>
+
+                    <div id="participants-tag-container" style="display:flex; flex-wrap:wrap; gap:0.5rem;">
+                        <!-- Dynamic diner tags -->
+                    </div>
+                </div>
+
+                <!-- Splitting Mode Selector -->
+                <div class="tab-bar">
+                    <button class="tab-btn active" data-split-mode="ITEMWISE">Mode B: Item-wise Allocation</button>
+                    <button class="tab-btn" data-split-mode="EQUAL">Mode A: Equal Split</button>
+                    <button class="tab-btn" data-split-mode="COMBINED">Mode C: Combined (Individual + Auto-Divided)</button>
+                </div>
+
+                <!-- Splitting Mode Description Banner -->
+                <div class="initiative-banner" style="margin-bottom:1rem; border-radius:var(--radius-subtle);" id="split-mode-description">
+                    <span><strong>Item-wise Mode:</strong> Assign each dish to specific diners. Shared items are divided proportionately with exact paise reconciliation.</span>
+                </div>
+
+                <!-- Item-wise Split Matrix Container -->
+                <div id="split-items-container">
+                    <!-- Dynamic item allocation cards -->
+                </div>
+
+                <!-- Equal Split Options (Only displayed when Mode A is active) -->
+                <div id="equal-split-options" class="forbes-card" style="display:none;">
+                    <h3>Equal Division Configuration</h3>
+                    <p style="font-size:0.85rem;">The verified bill total is divided equally among all active participants. Any remainder paise are allocated systematically so the sum strictly equals the bill total.</p>
+                </div>
+
+                <!-- Live Settlement Matrix Table -->
+                <div class="forbes-card" style="margin-top:2rem;">
+                    <div class="card-header">
+                        <div>
+                            <h2 class="card-title">Live Settlement Liability Matrix</h2>
+                            <p style="font-size:0.8rem; margin-bottom:0;">Includes proportional GST, service charge, and discounts allocated per participant.</p>
+                        </div>
+                        <div style="display:flex; align-items:center; gap:0.5rem;">
+                            <label style="font-size:0.75rem; font-weight:600; display:flex; align-items:center; gap:0.35rem; cursor:pointer;">
+                                <input type="checkbox" id="check-round-rupee"> Round to Nearest ₹1
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="table-responsive">
+                        <table class="financial-table" id="table-settlement-matrix">
+                            <thead>
+                                <tr>
+                                    <th>Participant</th>
+                                    <th class="numeric">Items Subtotal (₹)</th>
+                                    <th class="numeric">Discount (₹)</th>
+                                    <th class="numeric">Taxes & Charges (₹)</th>
+                                    <th class="numeric">Net Payable (₹)</th>
+                                    <th class="numeric">Share (%)</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody id="settlement-matrix-body">
+                                <!-- Dynamic settlement rows -->
+                            </tbody>
+                            <tfoot>
+                                <tr>
+                                    <td>Grand Total Sum:</td>
+                                    <td class="numeric" id="matrix-foot-subtotal">₹0.00</td>
+                                    <td class="numeric" id="matrix-foot-discount">-₹0.00</td>
+                                    <td class="numeric" id="matrix-foot-taxes">+₹0.00</td>
+                                    <td class="numeric" id="matrix-foot-grand" style="font-size:1.05rem; font-family:var(--font-serif); color:var(--color-accent);">₹0.00</td>
+                                    <td class="numeric">100.0%</td>
+                                    <td id="matrix-foot-status"><span class="badge badge-success">Balanced</span></td>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+
+                    <div style="margin-top:1.5rem; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:1rem;">
+                        <button class="btn btn-outline" id="btn-view-audit-breakdown">🔍 View Full Calculation Audit Trail</button>
+                        <button class="btn btn-accent" id="btn-proceed-to-upi" style="font-size:1rem; padding:0.85rem 2rem;">
+                            Generate UPI QRs & Collect Payments →
+                        </button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ========================================== -->
+            <!-- VIEW 4: UPI PAYMENTS & QR GENERATOR        -->
+            <!-- ========================================== -->
+            <section id="view-payments" class="app-view" style="display:none;">
+                <div class="card-header">
+                    <div>
+                        <h2>UPI Payment Settlement & QR Engine</h2>
+                        <p style="font-size:0.85rem; margin-bottom:0;">Generate NPCI-compliant UPI deep links, individual payment QRs, and WhatsApp financial receipts.</p>
+                    </div>
+                    <span class="badge badge-neutral">NPCI Certified Standard</span>
+                </div>
+
+                <!-- Recipient UPI Selector Bar -->
+                <div class="forbes-card" style="border-left:4px solid var(--color-primary);">
+                    <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:1rem;">
+                        <div>
+                            <span class="form-label">Beneficiary Account Receiving Funds:</span>
+                            <div style="display:flex; align-items:center; gap:0.75rem; margin-top:0.25rem;">
+                                <select class="form-control" id="select-active-upi-profile" style="font-weight:700; font-size:1rem; width:auto; min-width:240px;">
+                                    <!-- Dynamic UPI Profiles -->
+                                </select>
+                                <button class="btn btn-subtle btn-sm" id="btn-add-new-upi-quick">+ Add New UPI</button>
+                            </div>
+                        </div>
+                        <div style="text-align:right;">
+                            <span class="badge badge-success">0% Gateway Fee</span>
+                            <div style="font-size:0.75rem; color:var(--color-text-muted); margin-top:0.25rem;">Direct Peer-to-Peer Settlement</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Participant Carousel Tabs -->
+                <div class="tab-bar" id="payment-participant-tabs">
+                    <!-- Dynamic participant tabs -->
+                </div>
+
+                <!-- Individual Participant QR & Action Card -->
+                <div id="active-participant-payment-card" class="forbes-card">
+                    <div class="card-header">
+                        <div>
+                            <h2 id="pay-card-participant-name">Alice</h2>
+                            <p style="font-size:0.85rem; margin-bottom:0;" id="pay-card-items-summary">Consumed: 3 items</p>
+                        </div>
+                        <div style="text-align:right;">
+                            <div class="stat-value" id="pay-card-amount" style="color:var(--color-accent);">₹1,283.40</div>
+                            <label style="font-size:0.75rem; font-weight:600; cursor:pointer;">
+                                <input type="checkbox" id="check-payment-settled"> Marked as Paid
+                            </label>
+                        </div>
+                    </div>
+
+                    <div style="display:flex; flex-direction:column; align-items:center;">
+                        <!-- QR Display Card -->
+                        <div class="qr-container">
+                            <span class="badge badge-neutral">Scan with GPay • PhonePe • Paytm • BHIM</span>
+                            <div class="qr-box" id="participant-qr-render-box"></div>
+                            <div style="font-family:var(--font-mono); font-size:0.85rem; font-weight:700;" id="qr-amount-display">₹1,283.40</div>
+                            <div style="font-size:0.75rem; color:var(--color-text-secondary); margin-top:0.25rem;" id="qr-payee-display">Pay to: Deep Jhaveri</div>
+
+                            <!-- Countdown Bar -->
+                            <div class="countdown-bar">
+                                <span>Display Session:</span>
+                                <span class="countdown-timer" id="qr-countdown-text">05:00</span>
+                                <select id="select-countdown-duration" style="font-size:0.75rem; border:none; background:none; cursor:pointer;">
+                                    <option value="120">2 Mins</option>
+                                    <option value="300" selected>5 Mins</option>
+                                    <option value="600">10 Mins</option>
+                                    <option value="900">15 Mins</option>
+                                </select>
+                            </div>
+                            <div style="font-size:0.65rem; color:var(--color-text-muted); margin-top:0.35rem; line-height:1.2;">
+                                Note: Display timer controls screen visibility only. Does not technically invalidate banking settlement.
+                            </div>
+                        </div>
+
+                        <!-- Action Buttons Grid -->
+                        <div style="display:flex; flex-wrap:wrap; justify-content:center; gap:0.75rem; margin-top:1rem; width:100%; max-width:540px;">
+                            <button class="btn btn-primary" id="btn-open-upi-app" style="flex:1; min-width:160px;">
+                                📱 Open in UPI App
+                            </button>
+                            <button class="btn btn-accent" id="btn-share-whatsapp" style="flex:1; min-width:160px;">
+                                💬 Share on WhatsApp
+                            </button>
+                            <button class="btn btn-outline" id="btn-copy-upi-link" style="flex:1; min-width:160px;">
+                                📋 Copy UPI Link
+                            </button>
+                            <button class="btn btn-subtle" id="btn-download-qr-img" style="flex:1; min-width:160px;">
+                                💾 Download QR Image
+                            </button>
+                            <button class="btn btn-subtle" id="btn-native-share" style="flex:1; min-width:160px;">
+                                🔗 Native Mobile Share
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- WhatsApp Message Preview Drawer -->
+                    <div class="card-header" style="margin-top:2rem;">
+                        <h3 class="card-title">WhatsApp Receipt Message Preview</h3>
+                        <button class="btn btn-subtle btn-sm" id="btn-copy-message-text">Copy Text</button>
+                    </div>
+                    <div class="message-preview-box" id="whatsapp-preview-box">
+                        <!-- Formatted receipt text -->
+                    </div>
+                </div>
+
+                <!-- Consolidated Group Report Generator -->
+                <div class="forbes-card">
+                    <div class="card-header">
+                        <h3 class="card-title">Consolidated Group Expense Summary</h3>
+                        <button class="btn btn-accent btn-sm" id="btn-share-group-report">Share Group Summary →</button>
+                    </div>
+                    <p style="font-size:0.85rem;">Broadcast complete group expense breakdown, individual diner shares, and master collection details to your WhatsApp group.</p>
+                    <div class="message-preview-box" id="group-report-preview-box">
+                        <!-- Formatted group text -->
+                    </div>
+                </div>
+            </section>
+
+            <!-- ========================================== -->
+            <!-- VIEW 5: HISTORY & ARCHIVE                  -->
+            <!-- ========================================== -->
+            <section id="view-history" class="app-view" style="display:none;">
+                <div class="card-header">
+                    <div>
+                        <h2>Settlement Archive & History</h2>
+                        <p style="font-size:0.85rem; margin-bottom:0;">IndexedDB persistent local records. Reopen, duplicate, or inspect past expense audits.</p>
+                    </div>
+                    <div style="display:flex; gap:0.5rem;">
+                        <button class="btn btn-subtle btn-sm" id="btn-export-history">Export Backup (JSON)</button>
+                        <button class="btn btn-subtle btn-sm" id="btn-import-history">Import Backup</button>
+                    </div>
+                </div>
+
+                <!-- Search & Filters -->
+                <div class="form-row" style="margin-bottom:1.5rem;">
+                    <div class="form-col" style="flex:2;">
+                        <input type="text" class="form-control" id="input-search-history" placeholder="Search by restaurant name, invoice number, or location...">
+                    </div>
+                    <div class="form-col">
+                        <select class="form-control" id="filter-history-status">
+                            <option value="ALL">All Settlement Statuses</option>
+                            <option value="SETTLED">Fully Settled</option>
+                            <option value="PENDING">Pending Balances</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Bills Archive Container -->
+                <div id="history-bills-list">
+                    <!-- Dynamic history cards -->
+                </div>
+            </section>
+
+            <!-- ========================================== -->
+            <!-- VIEW 6: SETTINGS, GROUPS & TEST RUNNER     -->
+            <!-- ========================================== -->
+            <section id="view-settings" class="app-view" style="display:none;">
+                <div class="card-header">
+                    <div>
+                        <h2>Settings & Diagnostic Diagnostics</h2>
+                        <p style="font-size:0.85rem; margin-bottom:0;">Manage UPI profiles, frequent diner groups, rounding options, and execute automated unit tests.</p>
+                    </div>
+                    <span class="badge badge-neutral">v1.0.0</span>
+                </div>
+
+                <!-- Section: Saved UPI Profiles -->
+                <div class="forbes-card">
+                    <div class="card-header">
+                        <h3 class="card-title">Saved UPI Profiles</h3>
+                        <button class="btn btn-primary btn-sm" id="btn-modal-add-upi">+ Add New Profile</button>
+                    </div>
+                    <p style="font-size:0.85rem;">Manage recipient bank VPAs for QR generation. You can switch default profiles at any time.</p>
+                    <div id="settings-upi-profiles-list">
+                        <!-- Dynamic UPI profiles -->
+                    </div>
+                </div>
+
+                <!-- Section: Saved Participant Groups -->
+                <div class="forbes-card">
+                    <div class="card-header">
+                        <h3 class="card-title">Frequent Participant Groups</h3>
+                        <button class="btn btn-primary btn-sm" id="btn-modal-add-group">+ Create Group</button>
+                    </div>
+                    <p style="font-size:0.85rem;">Quickly load common groups of colleagues, flatmates, or family members into the splitting engine.</p>
+                    <div id="settings-groups-list">
+                        <!-- Dynamic groups -->
+                    </div>
+                </div>
+
+                <!-- Section: Calculation Preferences -->
+                <div class="forbes-card">
+                    <div class="card-header">
+                        <h3 class="card-title">Calculation Preferences</h3>
+                    </div>
+                    <div style="display:flex; flex-direction:column; gap:0.75rem;">
+                        <label style="display:flex; align-items:center; gap:0.5rem; font-size:0.88rem; cursor:pointer;">
+                            <input type="checkbox" id="pref-round-rupees">
+                            <span>Round participant liabilities to nearest ₹1.00 (Hamilton largest-remainder reconciliation guarantees exact match).</span>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Section: Automated Quality Control Test Suite (Section 12) -->
+                <div class="forbes-card" style="border-left:4px solid var(--color-accent);">
+                    <div class="card-header">
+                        <div>
+                            <h3 class="card-title">Automated Quality Control Test Suite</h3>
+                            <p style="font-size:0.8rem; margin-bottom:0;">Executes 14 unit tests verifying Integer Paise Math, Rounding, UPI URIs, and OCR Heuristics.</p>
+                        </div>
+                        <button class="btn btn-accent btn-sm" id="btn-run-tests">▶ Run All 14 Tests</button>
+                    </div>
+                    <div id="test-results-container" style="display:none;">
+                        <div id="test-summary-badge-bar" style="margin-bottom:1rem;"></div>
+                        <div class="table-responsive">
+                            <table class="financial-table" id="table-test-results">
+                                <thead>
+                                    <tr>
+                                        <th style="width:50px;">ID</th>
+                                        <th>Test Name</th>
+                                        <th style="width:90px;">Result</th>
+                                        <th>Validation Output</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="test-results-body"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Section: Privacy & Security Guarantee (Section 13) -->
+                <div class="forbes-card">
+                    <div class="card-header">
+                        <h3 class="card-title">Security & Data Privacy Standard</h3>
+                    </div>
+                    <div style="font-size:0.85rem; color:var(--color-text-secondary); line-height:1.6;">
+                        <p>• <strong>Strict Local-First Architecture:</strong> All bill images, items, and calculations are processed directly on your local device within the browser sandbox.</p>
+                        <p>• <strong>Zero Credential Storage:</strong> SplitSmart does not request, store, or transmit banking passwords, PINs, or confidential credentials.</p>
+                        <p>• <strong>No Mandatory Backend:</strong> Fully functional offline via Progressive Web App Service Workers and IndexedDB.</p>
+                    </div>
+                    <div style="margin-top:1rem; display:flex; gap:0.75rem;">
+                        <button class="btn btn-danger btn-sm" id="btn-factory-reset">Clear All Local Data (Reset)</button>
+                    </div>
+                </div>
+
+                <!-- Section: Credits & Editorial Statement -->
+                <div class="forbes-card" style="text-align:center; padding:2rem 1rem;">
+                    <div class="brand-title" style="justify-content:center; margin-bottom:0.25rem;">
+                        <span>SPLIT</span><span class="brand-accent">SMART</span>
+                    </div>
+                    <div style="font-size:0.8rem; text-transform:uppercase; letter-spacing:0.12em; color:var(--color-text-muted); margin-bottom:1rem;">
+                        The Financial Standard for Bill Settlement
+                    </div>
+                    <p style="font-size:0.85rem; max-width:540px; margin:0 auto 1rem auto;">
+                        An Initiative by <strong>Deep Jhaveri</strong>. Designed with Forbes editorial aesthetics, strict integer paise mathematics, and NPCI UPI interoperability.
+                    </p>
+                    <div style="font-size:0.75rem; color:var(--color-text-muted);">
+                        IndexedDB Persistent Storage • HTML5 Canvas Hybrid OCR • Service Worker PWA
+                    </div>
+                </div>
+            </section>
+
+        </main>
+
+        <!-- ========================================== -->
+        <!-- MOBILE BOTTOM NAVIGATION BAR               -->
+        <!-- ========================================== -->
+        <nav class="bottom-nav">
+            <button class="bnav-item active" data-view="dashboard" aria-label="Home Dashboard">
+                <svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
+                <span>Home</span>
+            </button>
+            <button class="bnav-item" data-view="scan" aria-label="Scan Bill">
+                <svg viewBox="0 0 24 24"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path><circle cx="12" cy="13" r="4"></circle></svg>
+                <span>Scan</span>
+            </button>
+            <button class="bnav-item" data-view="split" aria-label="Split Bill">
+                <svg viewBox="0 0 24 24"><line x1="18" y1="20" x2="18" y2="10"></line><line x1="12" y1="20" x2="12" y2="4"></line><line x1="6" y1="20" x2="6" y2="14"></line></svg>
+                <span>Split</span>
+            </button>
+            <button class="bnav-item" data-view="payments" aria-label="Payments & QR">
+                <svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>
+                <span>Payments</span>
+            </button>
+            <button class="bnav-item" data-view="history" aria-label="Settlement History">
+                <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+                <span>History</span>
+            </button>
+            <button class="bnav-item" data-view="settings" aria-label="Settings & Tests">
+                <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
+                <span>Settings</span>
+            </button>
+        </nav>
+
+        <!-- ========================================== -->
+        <!-- MODAL 1: MANDATORY UPI CONFIRMATION GUARD  -->
+        <!-- (Section 8 Requirement)                    -->
+        <!-- ========================================== -->
+        <div class="modal-overlay" id="modal-upi-confirm-guard">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2 class="modal-title" style="color:var(--color-accent);">MANDATORY VERIFICATION</h2>
+                    <p style="font-size:0.8rem; text-transform:uppercase; letter-spacing:0.08em; color:var(--color-text-secondary); margin-bottom:0;">
+                        FINANCIAL BENEFICIARY CONFIRMATION
+                    </p>
+                </div>
+                <div class="security-guard-box">
+                    <strong>PAYMENT WILL BE RECEIVED ON:</strong>
+                    <div style="font-size:1.1rem; font-weight:700; margin-top:0.35rem;" id="guard-recipient-name">Deep Jhaveri</div>
+                    <div style="font-family:var(--font-mono); font-size:1rem; color:var(--color-primary); margin-top:0.25rem;" id="guard-recipient-upi">deep@okhdfcbank</div>
+                </div>
+                <p style="font-size:0.85rem; color:var(--color-text-secondary);">
+                    Please strictly verify that this is your legitimate UPI ID. SplitSmart generates permanent NPCI deep links directly targeting this account.
+                </p>
+                <div style="margin-top:1.5rem; display:flex; justify-content:flex-end; gap:0.75rem;">
+                    <button class="btn btn-outline" id="btn-guard-cancel">Cancel & Change</button>
+                    <button class="btn btn-accent" id="btn-guard-confirm">I Confirm & Generate QR</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- ========================================== -->
+        <!-- MODAL 2: ADD/EDIT UPI PROFILE              -->
+        <!-- ========================================== -->
+        <div class="modal-overlay" id="modal-upi-profile">
+            <div class="modal-content">
+                <button class="modal-close-btn" id="btn-close-upi-modal">&times;</button>
+                <div class="modal-header">
+                    <h2 class="modal-title" id="upi-modal-title">Add UPI Beneficiary</h2>
+                </div>
+                <input type="hidden" id="upi-modal-id">
+                <div class="form-group">
+                    <label class="form-label">Beneficiary Full Name</label>
+                    <input type="text" class="form-control" id="upi-modal-name" placeholder="e.g. Deep Jhaveri">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">UPI ID / VPA</label>
+                    <input type="text" class="form-control" id="upi-modal-vpa" placeholder="e.g. username@okhdfcbank">
+                    <span style="font-size:0.72rem; color:var(--color-text-muted);">Must be a valid VPA registered on Google Pay, PhonePe, or BHIM.</span>
+                </div>
+                <div class="form-group">
+                    <label style="display:flex; align-items:center; gap:0.5rem; font-size:0.85rem; cursor:pointer;">
+                        <input type="checkbox" id="upi-modal-is-default">
+                        <span>Set as default receiving account</span>
+                    </label>
+                </div>
+                <div style="display:flex; justify-content:flex-end; gap:0.75rem; margin-top:1.5rem;">
+                    <button class="btn btn-outline" id="btn-cancel-upi-modal">Cancel</button>
+                    <button class="btn btn-primary" id="btn-save-upi-modal">Save UPI Profile</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- ========================================== -->
+        <!-- MODAL 3: ADD/EDIT SAVED GROUP              -->
+        <!-- ========================================== -->
+        <div class="modal-overlay" id="modal-group">
+            <div class="modal-content">
+                <button class="modal-close-btn" id="btn-close-group-modal">&times;</button>
+                <div class="modal-header">
+                    <h2 class="modal-title">Participant Group</h2>
+                </div>
+                <input type="hidden" id="group-modal-id">
+                <div class="form-group">
+                    <label class="form-label">Group Name</label>
+                    <input type="text" class="form-control" id="group-modal-name" placeholder="e.g. Office Lunch Squad">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Members (Comma-separated)</label>
+                    <textarea class="form-control" id="group-modal-members" rows="3" placeholder="Deep, Rohan, Priya, Ananya"></textarea>
+                </div>
+                <div style="display:flex; justify-content:flex-end; gap:0.75rem; margin-top:1.5rem;">
+                    <button class="btn btn-outline" id="btn-cancel-group-modal">Cancel</button>
+                    <button class="btn btn-primary" id="btn-save-group-modal">Save Group</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- ========================================== -->
+        <!-- MODAL 4: FULL CALCULATION AUDIT LOG        -->
+        <!-- ========================================== -->
+        <div class="modal-overlay" id="modal-audit-trail">
+            <div class="modal-content" style="max-width:700px;">
+                <button class="modal-close-btn" id="btn-close-audit-modal">&times;</button>
+                <div class="modal-header">
+                    <h2 class="modal-title">Financial Audit Breakdown</h2>
+                    <p style="font-size:0.8rem; margin-bottom:0;">Itemized mathematical reconciliation and proportionate distribution breakdown.</p>
+                </div>
+                <div id="audit-trail-content" style="max-height:60vh; overflow-y:auto;">
+                    <!-- Dynamic audit content -->
+                </div>
+                <div style="display:flex; justify-content:flex-end; margin-top:1.5rem;">
+                    <button class="btn btn-primary" id="btn-dismiss-audit-modal">Close Audit</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- ========================================== -->
+        <!-- MODAL 5: OPTIONAL AI CORRECTION CONSENT    -->
+        <!-- ========================================== -->
+        <div class="modal-overlay" id="modal-ai-assist">
+            <div class="modal-content">
+                <button class="modal-close-btn" id="btn-close-ai-modal">&times;</button>
+                <div class="modal-header">
+                    <h2 class="modal-title">AI-Assisted Receipt Parser</h2>
+                </div>
+                <div class="security-guard-box">
+                    <strong>EXPLICIT USER CONSENT REQUIRED:</strong>
+                    SplitSmart is 100% local by default. By enabling online AI assistance, you grant permission to process the raw extracted receipt text with Google Gemini API.
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Gemini API Key (Stored locally in your browser)</label>
+                    <input type="password" class="form-control" id="input-gemini-key" placeholder="Enter your Gemini API key...">
+                    <span style="font-size:0.72rem; color:var(--color-text-muted);">Your key is stored strictly in your browser's LocalStorage and is never shared.</span>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Raw Receipt Text</label>
+                    <textarea class="form-control" id="ai-raw-text-preview" rows="6" placeholder="Paste or edit raw OCR text..."></textarea>
+                </div>
+                <div style="display:flex; justify-content:flex-end; gap:0.75rem; margin-top:1.5rem;">
+                    <button class="btn btn-outline" id="btn-cancel-ai-modal">Cancel</button>
+                    <button class="btn btn-accent" id="btn-run-ai-parse">Parse with AI →</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Toast Notification Container -->
+        <div class="toast-notice" id="toast-notice"></div>
+
+    </div>
+
+    <!-- Scripts -->
+    <script src="js/qr-generator.js"></script>
+    <script src="js/calculation.js"></script>
+    <script src="js/upi.js"></script>
+    <script src="js/db.js"></script>
+    <script src="js/ocr.js"></script>
+    <script src="js/share.js"></script>
+    <script src="js/camera.js"></script>
+    <script src="js/sample-bills.js"></script>
+    <script src="js/tests.js"></script>
+    <script src="js/app.js"></script>
+
+    <!-- PWA Service Worker Registration -->
+    <script>
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', function() {
+                navigator.serviceWorker.register('./sw.js')
+                    .then(function(reg) {
+                        console.log('SplitSmart Service Worker active with scope:', reg.scope);
+                    })
+                    .catch(function(err) {
+                        console.warn('Service Worker registration skipped:', err);
+                    });
+            });
+        }
+    </script>
+</body>
+</html>

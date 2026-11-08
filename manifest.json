@@ -1,0 +1,48 @@
+{
+  "name": "SplitSmart – Smart Bill Scanner & UPI Splitter",
+  "short_name": "SplitSmart",
+  "description": "Forbes-inspired smart restaurant bill scanner, item-wise expense splitter, and UPI payment QR generator.",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "background_color": "#FFFFFF",
+  "theme_color": "#101010",
+  "icons": [
+    {
+      "src": "assets/icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "assets/icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "assets/icons/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    }
+  ],
+  "categories": ["finance", "utilities", "productivity"],
+  "shortcuts": [
+    {
+      "name": "Scan Bill",
+      "short_name": "Scan",
+      "description": "Quickly scan a new restaurant bill",
+      "url": "./index.html#scan",
+      "icons": [{ "src": "assets/icons/icon-192.png", "sizes": "192x192" }]
+    },
+    {
+      "name": "Bill History",
+      "short_name": "History",
+      "description": "Review past bills and settlement reports",
+      "url": "./index.html#history",
+      "icons": [{ "src": "assets/icons/icon-192.png", "sizes": "192x192" }]
+    }
+  ]
+}

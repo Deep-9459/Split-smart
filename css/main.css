@@ -1,0 +1,386 @@
+/**
+ * SplitSmart - Forbes-Inspired Premium Financial Theme
+ * Main Stylesheet: Typography, Color System, Grid, Layout
+ */
+
+:root {
+    /* Color Palette - Forbes Financial Standard */
+    --color-primary: #101010;
+    --color-primary-light: #2A2A2A;
+    --color-background: #FFFFFF;
+    --color-surface: #FFFFFF;
+    --color-surface-subtle: #F6F7F9;
+    --color-secondary-bg: #F2F2F2;
+    --color-accent: #C62828; /* Editorial Red */
+    --color-accent-hover: #B71C1C;
+    --color-accent-subtle: #FFEBEE;
+    --color-text-main: #101010;
+    --color-text-secondary: #555555;
+    --color-text-muted: #888888;
+    --color-border: #D8D8D8;
+    --color-border-subtle: #EBEBEB;
+    --color-border-strong: #101010;
+    
+    /* Financial Status Colors */
+    --color-success: #1B5E20;
+    --color-success-bg: #E8F5E9;
+    --color-warning: #E65100;
+    --color-warning-bg: #FFF3E0;
+    --color-error: #C62828;
+    --color-error-bg: #FFEBEE;
+
+    /* Typography */
+    --font-serif: "Playfair Display", Georgia, "Times New Roman", serif;
+    --font-sans: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    --font-mono: "SF Mono", "Roboto Mono", Menlo, Consolas, monospace;
+
+    /* Metrics & Geometry (Forbes Sharp Editorial Aesthetic) */
+    --radius-sharp: 0px;
+    --radius-subtle: 2px;
+    --radius-sm: 4px;
+    --radius-md: 6px;
+    --header-height: 64px;
+    --bottom-nav-height: 62px;
+    --max-content-width: 1120px;
+    
+    /* Shadows - Minimal & Crisp */
+    --shadow-subtle: 0 1px 3px rgba(0, 0, 0, 0.05);
+    --shadow-card: 0 2px 6px rgba(0, 0, 0, 0.06);
+    --shadow-elevated: 0 8px 24px rgba(0, 0, 0, 0.12);
+
+    /* Transitions */
+    --transition-fast: 0.15s ease;
+    --transition-normal: 0.25s ease;
+}
+
+/* Dark Theme Palette */
+[data-theme="dark"] {
+    --color-primary: #F5F5F5;
+    --color-primary-light: #E0E0E0;
+    --color-background: #0D0D0D;
+    --color-surface: #161616;
+    --color-surface-subtle: #1F1F1F;
+    --color-secondary-bg: #1A1A1A;
+    --color-accent: #EF5350; /* Softer red for dark backgrounds */
+    --color-accent-hover: #E53935;
+    --color-accent-subtle: #2C1818;
+    --color-text-main: #F5F5F5;
+    --color-text-secondary: #AAAAAA;
+    --color-text-muted: #777777;
+    --color-border: #2D2D2D;
+    --color-border-subtle: #222222;
+    --color-border-strong: #E0E0E0;
+
+    --color-success: #66BB6A;
+    --color-success-bg: #142816;
+    --color-warning: #FFA726;
+    --color-warning-bg: #2C1F0E;
+    --color-error: #EF5350;
+    --color-error-bg: #2C1818;
+
+    --shadow-subtle: 0 1px 3px rgba(0, 0, 0, 0.3);
+    --shadow-card: 0 2px 8px rgba(0, 0, 0, 0.4);
+    --shadow-elevated: 0 8px 24px rgba(0, 0, 0, 0.6);
+}
+
+/* CSS Reset & Box Sizing */
+*, *::before, *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+html {
+    font-size: 16px;
+    -webkit-text-size-adjust: 100%;
+    scroll-behavior: smooth;
+    background-color: var(--color-background);
+}
+
+body {
+    font-family: var(--font-sans);
+    color: var(--color-text-main);
+    background-color: var(--color-background);
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    overflow-x: hidden;
+}
+
+/* Editorial Typography */
+h1, h2, h3, h4, h5, h6, .font-serif {
+    font-family: var(--font-serif);
+    font-weight: 700;
+    color: var(--color-text-main);
+    letter-spacing: -0.02em;
+    line-height: 1.2;
+}
+
+h1 {
+    font-size: 2.25rem;
+    margin-bottom: 0.5rem;
+}
+
+h2 {
+    font-size: 1.65rem;
+    margin-bottom: 0.5rem;
+}
+
+h3 {
+    font-size: 1.25rem;
+    margin-bottom: 0.35rem;
+}
+
+p {
+    margin-bottom: 0.75rem;
+    color: var(--color-text-secondary);
+}
+
+a {
+    color: var(--color-text-main);
+    text-decoration: none;
+    transition: color var(--transition-fast);
+}
+
+a:hover {
+    color: var(--color-accent);
+}
+
+/* Layout Containers */
+.app-container {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    padding-bottom: calc(var(--bottom-nav-height) + env(safe-area-inset-bottom, 20px));
+}
+
+.content-wrapper {
+    max-width: var(--max-content-width);
+    width: 100%;
+    margin: 0 auto;
+    padding: 1.5rem 1rem;
+    flex: 1;
+}
+
+/* Top Forbes Header */
+.forbes-header {
+    background-color: var(--color-background);
+    border-bottom: 1px solid var(--color-border);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    transition: background-color var(--transition-normal), border-color var(--transition-normal);
+}
+
+.header-inner {
+    max-width: var(--max-content-width);
+    margin: 0 auto;
+    padding: 0.75rem 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+}
+
+.brand-section {
+    display: flex;
+    flex-direction: column;
+}
+
+.brand-title {
+    font-family: var(--font-serif);
+    font-size: 1.5rem;
+    font-weight: 900;
+    letter-spacing: -0.03em;
+    color: var(--color-text-main);
+    display: flex;
+    align-items: center;
+    gap: 0.35rem;
+    text-transform: uppercase;
+}
+
+.brand-accent {
+    color: var(--color-accent);
+}
+
+.brand-tagline {
+    font-size: 0.68rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--color-text-muted);
+}
+
+.header-controls {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+/* Initiative Banner */
+.initiative-banner {
+    background-color: var(--color-surface-subtle);
+    border-bottom: 1px solid var(--color-border-subtle);
+    padding: 0.35rem 1rem;
+    font-size: 0.75rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    color: var(--color-text-secondary);
+}
+
+.initiative-inner {
+    max-width: var(--max-content-width);
+    margin: 0 auto;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.initiative-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+}
+
+.initiative-badge {
+    background-color: var(--color-accent);
+    color: #FFFFFF;
+    font-size: 0.65rem;
+    padding: 1px 6px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    border-radius: var(--radius-subtle);
+}
+
+/* Offline / Online Connectivity Pill */
+.connectivity-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    font-size: 0.72rem;
+    font-weight: 600;
+    padding: 2px 8px;
+    border-radius: 12px;
+    border: 1px solid var(--color-border);
+    background-color: var(--color-surface);
+}
+
+.conn-dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background-color: var(--color-success);
+}
+
+.conn-dot.offline {
+    background-color: var(--color-error);
+}
+
+/* Desktop Navigation Bar */
+.desktop-nav {
+    display: none;
+    align-items: center;
+    gap: 1.5rem;
+}
+
+.nav-link {
+    font-size: 0.85rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--color-text-secondary);
+    padding: 0.5rem 0;
+    position: relative;
+    cursor: pointer;
+    transition: color var(--transition-fast);
+}
+
+.nav-link:hover {
+    color: var(--color-accent);
+}
+
+.nav-link.active {
+    color: var(--color-text-main);
+}
+
+.nav-link.active::after {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background-color: var(--color-accent);
+}
+
+/* Mobile Bottom Navigation Bar */
+.bottom-nav {
+    display: flex;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: calc(var(--bottom-nav-height) + env(safe-area-inset-bottom, 0px));
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+    background-color: var(--color-surface);
+    border-top: 1px solid var(--color-border);
+    z-index: 1000;
+    justify-content: space-around;
+    align-items: center;
+    box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.05);
+}
+
+.bnav-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    flex: 1;
+    height: 100%;
+    color: var(--color-text-muted);
+    font-size: 0.68rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    gap: 3px;
+    cursor: pointer;
+    background: none;
+    border: none;
+    transition: color var(--transition-fast);
+}
+
+.bnav-item svg {
+    width: 20px;
+    height: 20px;
+    stroke: currentColor;
+    fill: none;
+    stroke-width: 2;
+}
+
+.bnav-item.active {
+    color: var(--color-accent);
+}
+
+.bnav-item.active svg {
+    stroke: var(--color-accent);
+}
+
+@media (min-width: 820px) {
+    .desktop-nav {
+        display: flex;
+    }
+    .bottom-nav {
+        display: none;
+    }
+    .app-container {
+        padding-bottom: 0;
+    }
+}

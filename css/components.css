@@ -1,0 +1,660 @@
+/**
+ * SplitSmart - Forbes Components Stylesheet
+ * Financial Tables, Editorial Cards, Buttons, Modals, Forms, Verification Table
+ */
+
+/* Editorial Cards */
+.forbes-card {
+    background-color: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-subtle);
+    padding: 1.5rem;
+    margin-bottom: 1.5rem;
+    box-shadow: var(--shadow-subtle);
+    transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+}
+
+.forbes-card:hover {
+    border-color: var(--color-border-strong);
+}
+
+.card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid var(--color-border-subtle);
+    padding-bottom: 0.75rem;
+    margin-bottom: 1rem;
+}
+
+.card-title {
+    font-size: 1.25rem;
+    font-weight: 700;
+    margin-bottom: 0;
+}
+
+/* Stat Grid */
+.stat-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+.stat-box {
+    background-color: var(--color-surface-subtle);
+    border: 1px solid var(--color-border);
+    border-left: 3px solid var(--color-accent);
+    padding: 1rem 1.25rem;
+    border-radius: var(--radius-subtle);
+}
+
+.stat-label {
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    color: var(--color-text-secondary);
+    margin-bottom: 0.25rem;
+}
+
+.stat-value {
+    font-family: var(--font-serif);
+    font-size: 1.75rem;
+    font-weight: 700;
+    color: var(--color-text-main);
+    line-height: 1.1;
+}
+
+.stat-sub {
+    font-size: 0.72rem;
+    color: var(--color-text-muted);
+    margin-top: 0.35rem;
+    margin-bottom: 0;
+}
+
+/* Financial Tables */
+.table-responsive {
+    width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    margin-bottom: 1rem;
+}
+
+.financial-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.88rem;
+    text-align: left;
+}
+
+.financial-table th {
+    background-color: var(--color-surface-subtle);
+    color: var(--color-text-main);
+    font-weight: 700;
+    text-transform: uppercase;
+    font-size: 0.72rem;
+    letter-spacing: 0.08em;
+    padding: 0.75rem 0.85rem;
+    border-top: 1px solid var(--color-border);
+    border-bottom: 2px solid var(--color-border-strong);
+}
+
+.financial-table td {
+    padding: 0.75rem 0.85rem;
+    border-bottom: 1px solid var(--color-border-subtle);
+    color: var(--color-text-main);
+    vertical-align: middle;
+}
+
+.financial-table tr:hover td {
+    background-color: var(--color-surface-subtle);
+}
+
+.financial-table .numeric,
+.financial-table th.numeric {
+    text-align: right;
+    font-variant-numeric: tabular-nums;
+}
+
+.financial-table tfoot td {
+    font-weight: 700;
+    border-top: 2px solid var(--color-border-strong);
+    border-bottom: 1px solid var(--color-border-strong);
+    background-color: var(--color-surface-subtle);
+}
+
+/* Buttons */
+.btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    font-family: var(--font-sans);
+    font-size: 0.85rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    padding: 0.65rem 1.25rem;
+    border-radius: var(--radius-subtle);
+    border: 1px solid transparent;
+    cursor: pointer;
+    transition: all var(--transition-fast);
+    text-decoration: none;
+    line-height: 1;
+}
+
+.btn-primary {
+    background-color: var(--color-primary);
+    color: #FFFFFF;
+    border-color: var(--color-primary);
+}
+
+.btn-primary:hover {
+    background-color: var(--color-primary-light);
+    color: #FFFFFF;
+}
+
+.btn-accent {
+    background-color: var(--color-accent);
+    color: #FFFFFF;
+    border-color: var(--color-accent);
+}
+
+.btn-accent:hover {
+    background-color: var(--color-accent-hover);
+    color: #FFFFFF;
+}
+
+.btn-outline {
+    background-color: transparent;
+    color: var(--color-text-main);
+    border-color: var(--color-border-strong);
+}
+
+.btn-outline:hover {
+    background-color: var(--color-surface-subtle);
+    border-color: var(--color-primary);
+}
+
+.btn-subtle {
+    background-color: var(--color-surface-subtle);
+    color: var(--color-text-secondary);
+    border-color: var(--color-border);
+}
+
+.btn-subtle:hover {
+    color: var(--color-text-main);
+    border-color: var(--color-border-strong);
+}
+
+.btn-danger {
+    background-color: var(--color-error);
+    color: #FFFFFF;
+    border-color: var(--color-error);
+}
+
+.btn-sm {
+    padding: 0.4rem 0.75rem;
+    font-size: 0.75rem;
+}
+
+.btn-block {
+    display: flex;
+    width: 100%;
+}
+
+.btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+/* Badges & Pills */
+.badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+    font-size: 0.72rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    padding: 3px 8px;
+    border-radius: var(--radius-subtle);
+    line-height: 1;
+}
+
+.badge-success {
+    background-color: var(--color-success-bg);
+    color: var(--color-success);
+    border: 1px solid var(--color-success);
+}
+
+.badge-warning {
+    background-color: var(--color-warning-bg);
+    color: var(--color-warning);
+    border: 1px solid var(--color-warning);
+}
+
+.badge-error {
+    background-color: var(--color-error-bg);
+    color: var(--color-error);
+    border: 1px solid var(--color-error);
+}
+
+.badge-neutral {
+    background-color: var(--color-surface-subtle);
+    color: var(--color-text-secondary);
+    border: 1px solid var(--color-border);
+}
+
+/* Tab Switcher */
+.tab-bar {
+    display: flex;
+    border-bottom: 2px solid var(--color-border);
+    margin-bottom: 1.5rem;
+    gap: 0.5rem;
+    overflow-x: auto;
+}
+
+.tab-btn {
+    background: none;
+    border: none;
+    font-family: var(--font-sans);
+    font-size: 0.85rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--color-text-secondary);
+    padding: 0.75rem 1rem;
+    cursor: pointer;
+    position: relative;
+    white-space: nowrap;
+    transition: color var(--transition-fast);
+}
+
+.tab-btn:hover {
+    color: var(--color-accent);
+}
+
+.tab-btn.active {
+    color: var(--color-text-main);
+}
+
+.tab-btn.active::after {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background-color: var(--color-accent);
+}
+
+/* Forms & Inputs */
+.form-group {
+    margin-bottom: 1.25rem;
+}
+
+.form-label {
+    display: block;
+    font-size: 0.78rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--color-text-main);
+    margin-bottom: 0.35rem;
+}
+
+.form-control {
+    width: 100%;
+    font-family: var(--font-sans);
+    font-size: 0.95rem;
+    padding: 0.65rem 0.85rem;
+    background-color: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-subtle);
+    color: var(--color-text-main);
+    transition: border-color var(--transition-fast);
+}
+
+.form-control:focus {
+    outline: none;
+    border-color: var(--color-primary);
+    box-shadow: 0 0 0 1px var(--color-primary);
+}
+
+.form-row {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
+.form-col {
+    flex: 1;
+    min-width: 160px;
+}
+
+/* Camera Viewport */
+.camera-box {
+    position: relative;
+    width: 100%;
+    max-width: 640px;
+    margin: 0 auto;
+    background-color: #000000;
+    border-radius: var(--radius-subtle);
+    overflow: hidden;
+    aspect-ratio: 4/3;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.camera-video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.camera-guide-overlay {
+    position: absolute;
+    inset: 15px;
+    border: 2px dashed rgba(255, 255, 255, 0.75);
+    border-radius: 4px;
+    pointer-events: none;
+    box-shadow: 0 0 0 9999px rgba(0, 0, 0, 0.35);
+}
+
+.camera-controls-bar {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 1.5rem;
+    margin-top: 1rem;
+}
+
+.btn-shutter {
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+    background-color: #FFFFFF;
+    border: 4px solid var(--color-accent);
+    cursor: pointer;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+    transition: transform var(--transition-fast);
+}
+
+.btn-shutter:active {
+    transform: scale(0.92);
+}
+
+/* Multi-Capture Tray */
+.capture-tray {
+    display: flex;
+    gap: 0.75rem;
+    overflow-x: auto;
+    padding: 0.5rem 0;
+    margin-top: 1rem;
+}
+
+.capture-thumb-box {
+    position: relative;
+    width: 80px;
+    height: 100px;
+    border: 1px solid var(--color-border);
+    flex-shrink: 0;
+    border-radius: var(--radius-subtle);
+    overflow: hidden;
+}
+
+.capture-thumb-box img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.capture-remove-btn {
+    position: absolute;
+    top: 2px;
+    right: 2px;
+    background: rgba(0, 0, 0, 0.7);
+    color: #FFF;
+    border: none;
+    border-radius: 50%;
+    width: 20px;
+    height: 20px;
+    font-size: 11px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Split Allocation Matrix */
+.split-item-card {
+    background-color: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-subtle);
+    padding: 1rem;
+    margin-bottom: 1rem;
+}
+
+.split-item-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 0.75rem;
+}
+
+.split-item-title {
+    font-weight: 700;
+    font-size: 1rem;
+}
+
+.split-item-price {
+    font-family: var(--font-serif);
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: var(--color-text-main);
+}
+
+.participant-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-top: 0.5rem;
+}
+
+.chip-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.35rem 0.75rem;
+    background-color: var(--color-surface-subtle);
+    border: 1px solid var(--color-border);
+    border-radius: 16px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    cursor: pointer;
+    color: var(--color-text-secondary);
+    transition: all var(--transition-fast);
+}
+
+.chip-btn.selected {
+    background-color: var(--color-text-main);
+    color: #FFFFFF;
+    border-color: var(--color-text-main);
+}
+
+.chip-avatar {
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background-color: var(--color-accent);
+    color: #FFF;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.65rem;
+    font-weight: 700;
+}
+
+/* Forbes QR Display Card */
+.qr-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem 1.5rem;
+    background: #FFFFFF;
+    border: 2px solid var(--color-primary);
+    border-radius: var(--radius-subtle);
+    max-width: 360px;
+    margin: 1.5rem auto;
+    text-align: center;
+    box-shadow: var(--shadow-elevated);
+}
+
+.qr-box {
+    margin: 1rem 0;
+    padding: 10px;
+    background: #FFFFFF;
+    border: 1px solid var(--color-border);
+    display: flex;
+    justify-content: center;
+}
+
+.countdown-bar {
+    width: 100%;
+    background-color: var(--color-surface-subtle);
+    border: 1px solid var(--color-border);
+    padding: 0.5rem 0.75rem;
+    border-radius: var(--radius-subtle);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.8rem;
+    font-weight: 600;
+    margin-top: 1rem;
+}
+
+.countdown-timer {
+    font-family: var(--font-mono);
+    color: var(--color-accent);
+    font-size: 0.95rem;
+    font-weight: 700;
+}
+
+/* Modals */
+.modal-overlay {
+    position: fixed;
+    inset: 0;
+    background-color: rgba(0, 0, 0, 0.65);
+    backdrop-filter: blur(2px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 2000;
+    padding: 1rem;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity var(--transition-normal), visibility var(--transition-normal);
+}
+
+.modal-overlay.active {
+    opacity: 1;
+    visibility: visible;
+}
+
+.modal-content {
+    background-color: var(--color-surface);
+    border: 2px solid var(--color-border-strong);
+    border-radius: var(--radius-subtle);
+    max-width: 540px;
+    width: 100%;
+    max-height: 90vh;
+    overflow-y: auto;
+    padding: 1.75rem;
+    box-shadow: var(--shadow-elevated);
+    position: relative;
+}
+
+.modal-header {
+    border-bottom: 2px solid var(--color-accent);
+    padding-bottom: 0.75rem;
+    margin-bottom: 1.25rem;
+}
+
+.modal-title {
+    font-size: 1.4rem;
+    font-weight: 700;
+}
+
+.modal-close-btn {
+    position: absolute;
+    top: 1.25rem;
+    right: 1.25rem;
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    color: var(--color-text-secondary);
+    cursor: pointer;
+}
+
+/* Security Notice Box */
+.security-guard-box {
+    background-color: var(--color-accent-subtle);
+    border: 1px solid var(--color-accent);
+    border-left: 4px solid var(--color-accent);
+    padding: 1rem;
+    margin: 1rem 0;
+    font-size: 0.85rem;
+    border-radius: var(--radius-subtle);
+}
+
+.security-guard-box strong {
+    color: var(--color-accent);
+    text-transform: uppercase;
+    font-size: 0.75rem;
+    letter-spacing: 0.08em;
+    display: block;
+    margin-bottom: 0.35rem;
+}
+
+/* WhatsApp Message Box */
+.message-preview-box {
+    background-color: var(--color-surface-subtle);
+    border: 1px solid var(--color-border);
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+    padding: 1rem;
+    white-space: pre-wrap;
+    border-radius: var(--radius-subtle);
+    max-height: 250px;
+    overflow-y: auto;
+    margin-bottom: 1rem;
+    line-height: 1.4;
+}
+
+/* Toast Notification */
+.toast-notice {
+    position: fixed;
+    bottom: calc(var(--bottom-nav-height) + 20px);
+    left: 50%;
+    transform: translateX(-50%) translateY(50px);
+    background-color: var(--color-primary);
+    color: #FFFFFF;
+    padding: 0.65rem 1.25rem;
+    font-size: 0.82rem;
+    font-weight: 600;
+    border-radius: var(--radius-subtle);
+    box-shadow: var(--shadow-elevated);
+    z-index: 3000;
+    opacity: 0;
+    pointer-events: none;
+    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.toast-notice.show {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+}
